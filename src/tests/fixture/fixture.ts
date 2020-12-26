@@ -2,8 +2,8 @@
 import {IllegalArgumentException, ZonedDateTime} from '@js-joda/core';
 
 export enum FixtureTypes {
-  ZonedDateTime,
-  number
+  ZonedDateTime, /** Random date 20 years either side of now */
+  number /** Random number between 1 and 10000 */
 }
 
 /**
@@ -36,7 +36,7 @@ export class Fixture {
 
     return ZonedDateTime
         .now()
-        .plusDays(this.getRandom(0, 365 * 0) * (forwardInTime ? 1 : -1))
+        .plusDays(this.getRandom(0, 365 * 20) * (forwardInTime ? 1 : -1))
         .plusSeconds(this.getRandom(0, secondsInDay))
         .plusNanos(this.getRandom(0, 1000 * 1000 * 1000));
   }
