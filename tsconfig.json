@@ -14,7 +14,7 @@
     },
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "types": ["reflect-metadata"],
+    "types": ["reflect-metadata", "jest"],
     "lib": ["es6", "dom"]
   },
   "include": ["src/**/*", "iocConfig.ts"]
