@@ -15,10 +15,39 @@ export class LongCardNumberValidator implements ILongCardNumberValidator {
    * @param {string} cardNumber the long card number
    * @return {ValidationResult} result indicating whether the long card number is valid
    */
-  validateLongCardNumber(cardNumber: string): ValidationResult {
+  public validateLongCardNumber(cardNumber: string): ValidationResult {
+    let result : number = 0;
+
+    const reversed = cardNumber.split('').reverse().join('');
+
+    for (let i = 0; i < reversed.length; i += 2) {
+      result += parseInt(reversed[i]);
+      result += this.modulusDouble(reversed[i + 1]);
+    }
+
+    if (result % 10 == 0) {
+      return {
+        passedValidation: true,
+        errors: [],
+      };
+    }
+
     return {
-      passedValidation: true,
-      errors: [],
+      passedValidation: false,
+      errors: ['Invalid card number'],
     };
+  }
+
+  /**
+   * Doubles a value before adding the individual digits that make up the doubled value together
+   * Eg 7 => 14 => 1 + 4 => 5
+   * Eg 3 => 6
+   * @param {string} digit to double
+   * @return {number} doubled value or
+   */
+  private modulusDouble(digit : string) : number {
+    const doubled = parseInt(digit) * 2;
+
+    return doubled % 10 + Math.trunc(doubled / 10);
   }
 }

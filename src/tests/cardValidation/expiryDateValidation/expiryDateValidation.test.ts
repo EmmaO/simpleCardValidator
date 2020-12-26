@@ -1,4 +1,3 @@
-import 'reflect-metadata';
 import {ZonedDateTime} from '@js-joda/core';
 import {ExpiryDateValidator} from '../../../../src/services/cardValidation/expiryDateValidation/expiryDateValidator';
 import {Fixture, FixtureTypes as FixtureType} from '../../fixture/fixture';
