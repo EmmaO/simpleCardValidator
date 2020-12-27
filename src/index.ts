@@ -1,10 +1,16 @@
-import container from './config/iocConfig';
-import SERVICE_IDENTIFIERS from './config/serviceIdentifiers';
-import {CardDetailsValidator} from './services/cardValidation/cardDetailsValidator';
+import express from 'express';
+import CardValidationRouter from './routers/cardValidationRouter'
 
-const cardDetailsValidator = container.get<CardDetailsValidator>(SERVICE_IDENTIFIERS.CARD_DETAILS_VALIDATOR);
-console.log(cardDetailsValidator.validateCreditCardDetails({
-  longCardNumber: '',
-  expiryMonth: 1,
-  expiryYear: 2000,
-}).passedValidation);
+const app = express();
+app.use(express.json());
+
+const port = process.env.Port || '8000';
+
+app.use('/cardValidation', CardValidationRouter)
+
+app.listen(port, () => {
+  return console.log(`server is listening on ${port}`);
+})
+    .on('error', (err) => {
+      return console.error(err);
+    });
