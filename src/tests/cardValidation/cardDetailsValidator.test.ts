@@ -27,6 +27,49 @@ const longCardNumberValidator : ILongCardNumberValidator = {
 const cardDetailsValidator = new CardDetailsValidator(longCardNumberValidator, expiryDateValidator);
 
 describe('validateCreditCardDetails', () => {
+  test('correct parameter passed to longCardNumber validator', () => {
+    // arrange
+    const longCardNumberMockCallback = jest.fn((longCardNumber) => {
+      return {
+        passedValidation: true,
+        errors: [],
+      }
+    });
+
+    longCardNumberValidator.validateLongCardNumber = longCardNumberMockCallback;
+
+    const cardDetails = fixture.create(FixtureTypes.CreditCardDetails) as CreditCardDetails
+
+    // act
+    cardDetailsValidator.validateCreditCardDetails(cardDetails);
+
+    // assert
+    expect(longCardNumberMockCallback.mock.calls.length).toBe(1);
+    expect(longCardNumberMockCallback.mock.calls[0][0]).toBe(cardDetails.longCardNumber);
+  });
+
+  test('correct parameters passed to expiry validator', () => {
+    // arrange
+    const expiryDateCallback = jest.fn((expiryMonth, expiryYear) => {
+      return {
+        passedValidation: true,
+        errors: [],
+      }
+    });
+
+    expiryDateValidator.validateExpiryDate = expiryDateCallback;
+
+    const cardDetails = fixture.create(FixtureTypes.CreditCardDetails) as CreditCardDetails
+
+    // act
+    cardDetailsValidator.validateCreditCardDetails(cardDetails);
+
+    // assert
+    expect(expiryDateCallback.mock.calls.length).toBe(1);
+    expect(expiryDateCallback.mock.calls[0][0]).toBe(cardDetails.expiryMonth);
+    expect(expiryDateCallback.mock.calls[0][1]).toBe(cardDetails.expiryYear);
+  });
+
   test('when both validators pass validation returns pass result', () => {
     // arrange
     longCardNumberValidator.validateLongCardNumber = jest.fn((longCardNumber) => {
