@@ -6,6 +6,7 @@ import {LongCardNumberValidator} from '../services/cardValidation/longCardNumber
 import {ILongCardNumberValidator} from '../services/cardValidation/longCardNumberValidation/longCardNumberValidator';
 import {CardDetailsValidator, ICardDetailsValidator} from '../services/cardValidation/cardDetailsValidator';
 import SERVICE_IDENTIFIERS from './serviceIdentifiers';
+import {ILogger, Logger} from '../services/logging/logger';
 
 const container = new Container();
 container
@@ -15,6 +16,10 @@ container
 container
     .bind<ILongCardNumberValidator>(SERVICE_IDENTIFIERS.LONG_CARD_NUMBER_VALIDATOR)
     .to(LongCardNumberValidator);
+
+container
+    .bind<ILogger>(SERVICE_IDENTIFIERS.LOGGER)
+    .to(Logger);
 
 container
     .bind<IExpiryDateValidator>(SERVICE_IDENTIFIERS.EXPIRY_DATE_VALIDATOR)

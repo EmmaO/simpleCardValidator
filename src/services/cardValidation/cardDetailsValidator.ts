@@ -2,8 +2,8 @@ import CreditCardDetails from './creditCardDetails';
 import ValidationResult from './validationResult';
 import {inject, injectable} from 'inversify';
 import SERVICE_IDENTIFIERS from '../../config/serviceIdentifiers';
-import {LongCardNumberValidator} from './longCardNumberValidation/longCardNumberValidator';
-import {ExpiryDateValidator} from './expiryDateValidation/expiryDateValidator';
+import {ILongCardNumberValidator} from './longCardNumberValidation/longCardNumberValidator';
+import {IExpiryDateValidator} from './expiryDateValidation/expiryDateValidator';
 
 export interface ICardDetailsValidator {
   validateCreditCardDetails(creditCardDetails : CreditCardDetails) : ValidationResult;
@@ -14,16 +14,16 @@ export interface ICardDetailsValidator {
  * Used to validate credit card details
  */
 export class CardDetailsValidator implements ICardDetailsValidator {
-  private _longCardNumberValidator: LongCardNumberValidator;
-  private _expiryDateValidator: ExpiryDateValidator;
+  private _longCardNumberValidator: ILongCardNumberValidator;
+  private _expiryDateValidator: IExpiryDateValidator;
 
   /**
-   * @param {LongCardNumberValidator} longCardNumberValidator service for validating the long card number
-   * @param {ExpiryDateValidator} expiryDateValidator service for validating the expiry date
+   * @param {ILongCardNumberValidator} longCardNumberValidator service for validating the long card number
+   * @param {IExpiryDateValidator} expiryDateValidator service for validating the expiry date
    */
   public constructor(
-    @inject(SERVICE_IDENTIFIERS.LONG_CARD_NUMBER_VALIDATOR) longCardNumberValidator : LongCardNumberValidator,
-    @inject(SERVICE_IDENTIFIERS.EXPIRY_DATE_VALIDATOR) expiryDateValidator : ExpiryDateValidator,
+    @inject(SERVICE_IDENTIFIERS.LONG_CARD_NUMBER_VALIDATOR) longCardNumberValidator : ILongCardNumberValidator,
+    @inject(SERVICE_IDENTIFIERS.EXPIRY_DATE_VALIDATOR) expiryDateValidator : IExpiryDateValidator,
   ) {
     this._longCardNumberValidator = longCardNumberValidator;
     this._expiryDateValidator = expiryDateValidator;

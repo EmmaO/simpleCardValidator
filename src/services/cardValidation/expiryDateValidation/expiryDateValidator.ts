@@ -21,7 +21,7 @@ export class ExpiryDateValidator implements IExpiryDateValidator {
    */
   public validateExpiryDate(expiryMonth: number, expiryYear: number): ValidationResult {
     const cardExpiryStartOfMonth = ZonedDateTime.of(expiryYear, expiryMonth, 1, 0, 0, 0, 0, ZoneOffset.UTC);
-    const cardExpiry = cardExpiryStartOfMonth.plusMonths(1).plusDays(-1);
+    const cardExpiry = cardExpiryStartOfMonth.plusMonths(1);
 
     const now = ZonedDateTime.now();
 

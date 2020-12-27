@@ -1,9 +1,12 @@
 /* eslint-disable no-unused-vars */
 import {IllegalArgumentException, ZonedDateTime} from '@js-joda/core';
+import CreditCardDetails from '../../services/cardValidation/creditCardDetails';
 
 export enum FixtureTypes {
   ZonedDateTime, /** Random date 20 years either side of now */
-  number /** Random number between 1 and 10000 */
+  CreditCardDetails, /** Random credit card details */
+  number, /** Random number between 1 and 10000 */
+  string /** Random string */
 }
 
 /**
@@ -15,11 +18,19 @@ export class Fixture {
    * @param {FixtureTypes} type type of object to retrieve
    * @return {any} pseudorandomised value
    */
-  public create(type : FixtureTypes) : ZonedDateTime | number {
+  public create(type : FixtureTypes) :
+    ZonedDateTime |
+    CreditCardDetails |
+    number |
+    string {
     if (type === FixtureTypes.ZonedDateTime) {
       return this.createZonedDateTime();
     } else if (type == FixtureTypes.number) {
       return this.createNumber();
+    } else if (type == FixtureTypes.string) {
+      return this.createString();
+    } else if (type == FixtureTypes.CreditCardDetails) {
+      return this.createCreditCardDetails();
     } else {
       throw new IllegalArgumentException('FixtureType not recognised')
     }
@@ -42,6 +53,25 @@ export class Fixture {
   }
 
   /**
+   * Creates a random set of credit card details
+   *
+   * @private
+   * @return {CreditCardDetails}
+   */
+  private createCreditCardDetails() : CreditCardDetails {
+    let longCardNumber = '';
+    for (let i = 0; i < 16; i++) {
+      longCardNumber += this.getRandom(0, 10);
+    }
+
+    return {
+      longCardNumber: longCardNumber,
+      expiryMonth: this.getRandom(1, 13),
+      expiryYear: this.getRandom(2000, 2050),
+    };
+  }
+
+  /**
    * Creates a random positive number
    *
    * @template T
@@ -49,6 +79,22 @@ export class Fixture {
    */
   private createNumber() : number {
     return this.getRandom(1, 10000)
+  }
+
+  /**
+   * Returns a randomised string
+   * @private
+   * @return {string}
+   */
+  private createString() : string {
+    const charSet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
+    let res = '';
+
+    for (let i = 0; i < 40; i++) {
+      res += charSet[this.getRandom(0, charSet.length)];
+    }
+
+    return res;
   }
 
   /**

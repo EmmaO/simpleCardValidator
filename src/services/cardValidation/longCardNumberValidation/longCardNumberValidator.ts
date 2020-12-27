@@ -1,4 +1,6 @@
-import {injectable} from 'inversify';
+import {inject, injectable} from 'inversify';
+import SERVICE_IDENTIFIERS from '../../../config/serviceIdentifiers';
+import {ILogger} from '../../../services/logging/logger';
 import ValidationResult from '../validationResult';
 
 export interface ILongCardNumberValidator {
@@ -10,6 +12,16 @@ export interface ILongCardNumberValidator {
  * Validator for checking the long card number on a credit card
  */
 export class LongCardNumberValidator implements ILongCardNumberValidator {
+  private _logger: ILogger;
+
+  /**
+   * Creates an instance of LongCardNumberValidator.
+   * @param {ILogger} logger
+   */
+  public constructor(@inject(SERVICE_IDENTIFIERS.LOGGER) logger : ILogger) {
+    this._logger = logger;
+  }
+
   /**
    * Verifies the the user has submitted a valid long card number
    * @param {string} cardNumber the long card number
@@ -31,6 +43,8 @@ export class LongCardNumberValidator implements ILongCardNumberValidator {
         errors: [],
       };
     }
+
+    this._logger.log('Invalid card number');
 
     return {
       passedValidation: false,

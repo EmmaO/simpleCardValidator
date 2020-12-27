@@ -1,6 +1,11 @@
+import {ILogger} from '../../../services/logging/logger';
 import {LongCardNumberValidator} from '../../../services/cardValidation/longCardNumberValidation/longCardNumberValidator';
 
-const longCardNumberValidator = new LongCardNumberValidator();
+const logger : ILogger = {
+  log: jest.fn((message) => {}),
+};
+
+const longCardNumberValidator = new LongCardNumberValidator(logger);
 
 describe('validateLongCardNumber', () => {
   test('When long card number valid, passes validation', () => {
